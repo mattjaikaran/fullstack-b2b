@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import check_password, make_password
 from django_matt import MattAPI
 from django_matt.auth import create_token_pair, jwt_required, refresh_access_token
 from django_matt.core import APIController
-from django_matt.core.errors import APIError, NotFoundAPIError, ValidationAPIError
+from django_matt.core.errors import APIError, ValidationAPIError
 
 from .schemas import (
     ChangePasswordSchema,

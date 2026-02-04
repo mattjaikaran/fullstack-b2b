@@ -1,12 +1,14 @@
 # Fullstack B2B
 
+[![CI](https://github.com/yourusername/fullstack-b2b/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/fullstack-b2b/actions/workflows/ci.yml)
+
 A complete B2B SaaS monorepo with Django API backend and React frontend.
 
 ## Stack
 
-- **Backend**: Django 5.2 + django-matt + PostgreSQL
-- **Frontend**: React 18 + Vite + TailwindCSS + TanStack Query
-- **Infrastructure**: Docker + Docker Compose
+- **Backend**: Django 5.2 + Django Ninja + PostgreSQL + uv
+- **Frontend**: React 19 + Vite + TailwindCSS + TanStack Query + bun
+- **Infrastructure**: Docker + Docker Compose + GitHub Actions
 
 ## Quick Start
 
@@ -57,6 +59,8 @@ make build         # Build containers
 make down          # Stop containers
 make migrate       # Run migrations
 make sync-types    # Generate TypeScript types from backend
+make lint          # Run linting on both frontend and backend
+make format        # Format code
 make test          # Run all tests
 make clean         # Remove containers and volumes
 ```
@@ -76,6 +80,16 @@ make clean         # Remove containers and volumes
 - JWT authentication
 - Organization switcher UI
 - Type-safe API client
+
+## CI/CD
+
+This project includes a GitHub Actions CI workflow that:
+
+- **Backend**: Runs linting (ruff), type checking (mypy), and tests (pytest) with PostgreSQL
+- **Frontend**: Runs linting (eslint), type checking (tsc), and builds
+- **Docker**: Builds both backend and frontend images
+
+The workflow runs on every push and pull request to the `main` branch.
 
 ## Deployment
 

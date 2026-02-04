@@ -1,4 +1,4 @@
-.PHONY: help dev prod build down logs clean install migrate
+.PHONY: help dev prod build down logs clean install migrate lint format test
 
 help:
 	@echo "Fullstack B2B - Development Commands"
@@ -10,6 +10,9 @@ help:
 	@echo "  make down       - Stop all containers"
 	@echo "  make logs       - View container logs"
 	@echo "  make migrate    - Run database migrations"
+	@echo "  make lint       - Run linting on both frontend and backend"
+	@echo "  make format     - Format code"
+	@echo "  make test       - Run all tests"
 	@echo "  make clean      - Remove all containers and volumes"
 
 # Install dependencies
@@ -70,6 +73,28 @@ dbshell:
 sync-types:
 	cd backend && python manage.py sync_types --target typescript --output ../frontend/src/types
 
+# Linting
+lint:
+	cd backend && ruff check . && ruff format --check .
+	cd frontend && bun run lint
+
+lint-backend:
+	cd backend && ruff check .
+
+lint-frontend:
+	cd frontend && bun run lint
+
+# Formatting
+format:
+	cd backend && ruff format .
+	cd frontend && bun run format
+
+format-backend:
+	cd backend && ruff format .
+
+format-frontend:
+	cd frontend && bun run format
+
 # Testing
 test:
 	cd backend && pytest
@@ -79,7 +104,7 @@ test-backend:
 	cd backend && pytest -v
 
 test-frontend:
-	cd frontend && bun run typecheck
+	cd frontend && bun run typecheck && bun run lint
 
 # Cleanup
 clean:

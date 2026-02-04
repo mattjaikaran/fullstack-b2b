@@ -7,7 +7,6 @@ from uuid import UUID
 from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.utils import timezone
-from django.utils.text import slugify
 
 from django_matt import MattAPI
 from django_matt.auth import jwt_required
@@ -41,9 +40,9 @@ class OrganizationController(APIController):
     @jwt_required
     async def list_organizations(request) -> list[OrganizationWithRoleSchema]:
         """List organizations the current user belongs to."""
-        memberships = Membership.objects.filter(
-            user=request.user, is_active=True
-        ).select_related("organization")
+        memberships = Membership.objects.filter(user=request.user, is_active=True).select_related(
+            "organization"
+        )
 
         result = []
         async for membership in memberships:
@@ -153,9 +152,7 @@ class TeamController(APIController):
     async def list_teams(request, org_id: UUID) -> list[TeamSchema]:
         """List teams in an organization."""
         try:
-            await Membership.objects.aget(
-                user=request.user, organization_id=org_id, is_active=True
-            )
+            await Membership.objects.aget(user=request.user, organization_id=org_id, is_active=True)
         except Membership.DoesNotExist:
             raise NotFoundAPIError("Organization not found")
 
@@ -250,9 +247,7 @@ class MemberController(APIController):
     async def list_members(request, org_id: UUID) -> list[MembershipSchema]:
         """List members of an organization."""
         try:
-            await Membership.objects.aget(
-                user=request.user, organization_id=org_id, is_active=True
-            )
+            await Membership.objects.aget(user=request.user, organization_id=org_id, is_active=True)
         except Membership.DoesNotExist:
             raise NotFoundAPIError("Organization not found")
 
@@ -523,12 +518,8 @@ def register_org_routes(api: MattAPI) -> None:
     api.delete("/organizations/{org_id}")(OrganizationController.delete_organization)
 
     # Teams
-    api.get("/organizations/{org_id}/teams", response=list[TeamSchema])(
-        TeamController.list_teams
-    )
-    api.post("/organizations/{org_id}/teams", response=TeamSchema)(
-        TeamController.create_team
-    )
+    api.get("/organizations/{org_id}/teams", response=list[TeamSchema])(TeamController.list_teams)
+    api.post("/organizations/{org_id}/teams", response=TeamSchema)(TeamController.create_team)
     api.patch("/organizations/{org_id}/teams/{team_id}", response=TeamSchema)(
         TeamController.update_team
     )
