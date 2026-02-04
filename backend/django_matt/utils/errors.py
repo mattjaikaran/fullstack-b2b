@@ -6,7 +6,6 @@ import traceback
 from collections.abc import Callable
 
 from django.http import HttpRequest, HttpResponse, JsonResponse
-
 from django_matt.core.errors import APIError
 
 
