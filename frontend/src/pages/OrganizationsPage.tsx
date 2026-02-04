@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import { useOrganization } from '@/lib/organizations'
-import { formatDate } from '@/lib/utils'
 
 export default function OrganizationsPage() {
   const { organizations, currentOrg, setCurrentOrg } = useOrganization()
