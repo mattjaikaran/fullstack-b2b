@@ -1,8 +1,9 @@
 """API configuration and routes."""
 
+from django_matt import MattAPI
+
 from apps.organizations.controllers import register_org_routes
 from apps.users.controllers import register_auth_routes
-from django_matt import MattAPI
 
 # Create the API instance
 api = MattAPI(
