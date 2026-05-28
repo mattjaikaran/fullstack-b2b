@@ -1,18 +1,42 @@
-import { useState, FormEvent } from 'react'
+import { useReducer, FormEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@/lib/auth'
 import { api, getErrorMessage } from '@/lib/api'
 import { formatDateTime } from '@/lib/utils'
 
+interface ProfileFormState {
+  firstName: string
+  lastName: string
+  bio: string
+  error: string
+  success: string
+}
+
+type ProfileFormAction =
+  | { type: 'SET_FIELD'; field: keyof Pick<ProfileFormState, 'firstName' | 'lastName' | 'bio'>; value: string }
+  | { type: 'SET_STATUS'; error: string; success: string }
+
+function reducer(state: ProfileFormState, action: ProfileFormAction): ProfileFormState {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return { ...state, [action.field]: action.value }
+    case 'SET_STATUS':
+      return { ...state, error: action.error, success: action.success }
+  }
+}
+
 export default function ProfilePage() {
   const { user } = useAuth()
   const queryClient = useQueryClient()
 
-  const [firstName, setFirstName] = useState(user?.first_name || '')
-  const [lastName, setLastName] = useState(user?.last_name || '')
-  const [bio, setBio] = useState(user?.bio || '')
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
+  const [state, dispatch] = useReducer(reducer, {
+    firstName: user?.first_name || '',
+    lastName: user?.last_name || '',
+    bio: user?.bio || '',
+    error: '',
+    success: '',
+  })
+  const { firstName, lastName, bio, error, success } = state
 
   const updateProfile = useMutation({
     mutationFn: async (data: { first_name: string; last_name: string; bio: string }) => {
@@ -21,12 +45,10 @@ export default function ProfilePage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] })
-      setSuccess('Profile updated successfully!')
-      setError('')
+      dispatch({ type: 'SET_STATUS', error: '', success: 'Profile updated successfully!' })
     },
     onError: (err) => {
-      setError(getErrorMessage(err))
-      setSuccess('')
+      dispatch({ type: 'SET_STATUS', error: getErrorMessage(err), success: '' })
     },
   })
 
@@ -108,8 +130,9 @@ export default function ProfilePage() {
                     id="firstName"
                     type="text"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'firstName', value: e.target.value })}
                     className="input mt-1"
+                    aria-label="First name"
                   />
                 </div>
 
@@ -121,8 +144,9 @@ export default function ProfilePage() {
                     id="lastName"
                     type="text"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'lastName', value: e.target.value })}
                     className="input mt-1"
+                    aria-label="Last name"
                   />
                 </div>
 
@@ -134,9 +158,10 @@ export default function ProfilePage() {
                     id="bio"
                     rows={3}
                     value={bio}
-                    onChange={(e) => setBio(e.target.value)}
+                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'bio', value: e.target.value })}
                     className="input mt-1"
-                    placeholder="Tell us about yourself..."
+                    placeholder="Tell us about yourself…"
+                    aria-label="Bio"
                   />
                 </div>
               </div>
@@ -144,7 +169,7 @@ export default function ProfilePage() {
 
             <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
               <button type="submit" disabled={updateProfile.isPending} className="btn-primary">
-                {updateProfile.isPending ? 'Saving...' : 'Save changes'}
+                {updateProfile.isPending ? 'Saving…' : 'Save changes'}
               </button>
             </div>
           </form>

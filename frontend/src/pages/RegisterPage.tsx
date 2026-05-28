@@ -1,34 +1,64 @@
-import { useState, FormEvent } from 'react'
+import { useReducer, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/lib/auth'
 import { getErrorMessage } from '@/lib/api'
 
+interface RegisterFormState {
+  email: string
+  username: string
+  password: string
+  confirmPassword: string
+  error: string
+  isLoading: boolean
+}
+
+type RegisterFormAction =
+  | { type: 'SET_FIELD'; field: keyof Pick<RegisterFormState, 'email' | 'username' | 'password' | 'confirmPassword'>; value: string }
+  | { type: 'SET_ERROR'; error: string }
+  | { type: 'SET_LOADING'; isLoading: boolean }
+
+const initialState: RegisterFormState = {
+  email: '',
+  username: '',
+  password: '',
+  confirmPassword: '',
+  error: '',
+  isLoading: false,
+}
+
+function reducer(state: RegisterFormState, action: RegisterFormAction): RegisterFormState {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return { ...state, [action.field]: action.value }
+    case 'SET_ERROR':
+      return { ...state, error: action.error }
+    case 'SET_LOADING':
+      return { ...state, isLoading: action.isLoading }
+  }
+}
+
 export default function RegisterPage() {
-  const [email, setEmail] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const { email, username, password, confirmPassword, error, isLoading } = state
 
   const { register, login } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    setError('')
+    dispatch({ type: 'SET_ERROR', error: '' })
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match')
+      dispatch({ type: 'SET_ERROR', error: 'Passwords do not match' })
       return
     }
 
     if (password.length < 8) {
-      setError('Password must be at least 8 characters')
+      dispatch({ type: 'SET_ERROR', error: 'Password must be at least 8 characters' })
       return
     }
 
-    setIsLoading(true)
+    dispatch({ type: 'SET_LOADING', isLoading: true })
 
     try {
       await register({ email, username, password })
@@ -36,9 +66,9 @@ export default function RegisterPage() {
       await login({ email, password })
       navigate('/dashboard', { replace: true })
     } catch (err) {
-      setError(getErrorMessage(err))
+      dispatch({ type: 'SET_ERROR', error: getErrorMessage(err) })
     } finally {
-      setIsLoading(false)
+      dispatch({ type: 'SET_LOADING', isLoading: false })
     }
   }
 
@@ -76,9 +106,10 @@ export default function RegisterPage() {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'email', value: e.target.value })}
                 className="input mt-1"
                 placeholder="you@example.com"
+                aria-label="Email address"
               />
             </div>
 
@@ -93,9 +124,10 @@ export default function RegisterPage() {
                 autoComplete="username"
                 required
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'username', value: e.target.value })}
                 className="input mt-1"
                 placeholder="johndoe"
+                aria-label="Username"
               />
             </div>
 
@@ -110,9 +142,10 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'password', value: e.target.value })}
                 className="input mt-1"
                 placeholder="••••••••"
+                aria-label="Password"
               />
             </div>
 
@@ -127,15 +160,16 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'confirmPassword', value: e.target.value })}
                 className="input mt-1"
                 placeholder="••••••••"
+                aria-label="Confirm password"
               />
             </div>
           </div>
 
           <button type="submit" disabled={isLoading} className="btn-primary w-full">
-            {isLoading ? 'Creating account...' : 'Create account'}
+            {isLoading ? 'Creating account…' : 'Create account'}
           </button>
         </form>
       </div>

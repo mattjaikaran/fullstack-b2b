@@ -54,7 +54,7 @@ export default function Layout() {
                   >
                     {user?.email}
                   </Link>
-                  <button onClick={logout} className="btn-outline text-sm">
+                  <button type="button" onClick={logout} className="btn-outline text-sm">
                     Logout
                   </button>
                 </>
@@ -81,7 +81,7 @@ export default function Layout() {
       {/* Footer */}
       <footer className="mt-auto bg-white">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
+          <p className="text-center text-sm text-gray-500" suppressHydrationWarning>
             &copy; {new Date().getFullYear()} MyApp. All rights reserved.
           </p>
         </div>

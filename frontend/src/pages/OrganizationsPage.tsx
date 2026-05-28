@@ -17,8 +17,8 @@ export default function OrganizationsPage() {
         {organizations.map((org) => (
           <div key={org.id} className="rounded-lg border bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 text-xl font-bold text-primary-700">
+              <div className="flex items-center gap-4">
+                <div className="flex size-12 items-center justify-center rounded-lg bg-primary-100 text-xl font-bold text-primary-700">
                   {org.name.charAt(0).toUpperCase()}
                 </div>
                 <div>
@@ -28,13 +28,14 @@ export default function OrganizationsPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-3">
                 {currentOrg?.id === org.id ? (
                   <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
                     Current
                   </span>
                 ) : (
                   <button
+                    type="button"
                     onClick={() => setCurrentOrg(org)}
                     className="btn-outline text-sm"
                   >

@@ -41,16 +41,22 @@ export default function TeamPage() {
             value={inviteEmail}
             onChange={(e) => setInviteEmail(e.target.value)}
             placeholder="email@example.com"
+            aria-label="Invite email address"
             className="input flex-1"
             required
           />
-          <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value)} className="input w-32">
+          <select
+            value={inviteRole}
+            onChange={(e) => setInviteRole(e.target.value)}
+            aria-label="Invite role"
+            className="input w-32"
+          >
             <option value="member">Member</option>
             <option value="admin">Admin</option>
             <option value="viewer">Viewer</option>
           </select>
           <button type="submit" className="btn-primary" disabled={inviteMember.isPending}>
-            {inviteMember.isPending ? 'Sending...' : 'Invite'}
+            {inviteMember.isPending ? 'Sending…' : 'Invite'}
           </button>
         </form>
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
@@ -62,7 +68,7 @@ export default function TeamPage() {
           <h2 className="text-lg font-semibold">Members ({members.length})</h2>
         </div>
         {membersLoading ? (
-          <div className="p-6 text-center">Loading...</div>
+          <div className="p-6 text-center">Loading&#8230;</div>
         ) : (
           <div className="divide-y">
             {members.map((member) => (
@@ -86,7 +92,7 @@ export default function TeamPage() {
           <h2 className="text-lg font-semibold">Teams ({teams.length})</h2>
         </div>
         {teamsLoading ? (
-          <div className="p-6 text-center">Loading...</div>
+          <div className="p-6 text-center">Loading&#8230;</div>
         ) : teams.length === 0 ? (
           <div className="p-6 text-center text-gray-500">No teams yet</div>
         ) : (

@@ -43,10 +43,10 @@ export default function DashboardPage() {
       <div className="mt-8">
         <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <button className="btn-outline">View Profile</button>
-          <button className="btn-outline">Change Password</button>
-          <button className="btn-outline">Notifications</button>
-          <button className="btn-outline">Settings</button>
+          <button type="button" className="btn-outline">View Profile</button>
+          <button type="button" className="btn-outline">Change Password</button>
+          <button type="button" className="btn-outline">Notifications</button>
+          <button type="button" className="btn-outline">Settings</button>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, use, useState, useMemo, useCallback, ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { api } from './api'
 
@@ -51,7 +51,9 @@ const fetchOrganizations = async (): Promise<Organization[]> => {
 }
 
 export function OrganizationProvider({ children }: { children: ReactNode }) {
-  const [currentOrg, setCurrentOrgState] = useState<Organization | null>(null)
+  const [currentOrgId, setCurrentOrgId] = useState<string | null>(
+    () => localStorage.getItem(CURRENT_ORG_KEY)
+  )
   const queryClient = useQueryClient()
 
   const { data: organizations = [], isLoading } = useQuery({
@@ -59,38 +61,44 @@ export function OrganizationProvider({ children }: { children: ReactNode }) {
     queryFn: fetchOrganizations,
   })
 
-  useEffect(() => {
-    if (organizations.length > 0 && !currentOrg) {
-      const savedOrgId = localStorage.getItem(CURRENT_ORG_KEY)
-      const savedOrg = organizations.find((o) => o.id === savedOrgId)
-      setCurrentOrgState(savedOrg || organizations[0])
+  // Derive currentOrg from organizations list and stored id — no useEffect needed
+  const currentOrg = useMemo((): Organization | null => {
+    if (organizations.length === 0) return null
+    if (currentOrgId) {
+      const found = organizations.find((o) => o.id === currentOrgId)
+      if (found) return found
     }
-  }, [organizations, currentOrg])
+    return organizations[0]
+  }, [organizations, currentOrgId])
 
   const setCurrentOrg = (org: Organization | null) => {
-    setCurrentOrgState(org)
     if (org) {
       localStorage.setItem(CURRENT_ORG_KEY, org.id)
+      setCurrentOrgId(org.id)
     } else {
       localStorage.removeItem(CURRENT_ORG_KEY)
+      setCurrentOrgId(null)
     }
   }
 
-  const refreshOrganizations = () => {
+  const refreshOrganizations = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: ['organizations'] })
-  }
+  }, [queryClient])
+
+  const value = useMemo(
+    () => ({ organizations, currentOrg, isLoading, setCurrentOrg, refreshOrganizations }),
+    [organizations, currentOrg, isLoading, refreshOrganizations]
+  )
 
   return (
-    <OrganizationContext.Provider
-      value={{ organizations, currentOrg, isLoading, setCurrentOrg, refreshOrganizations }}
-    >
+    <OrganizationContext.Provider value={value}>
       {children}
     </OrganizationContext.Provider>
   )
 }
 
 export function useOrganization() {
-  const context = useContext(OrganizationContext)
+  const context = use(OrganizationContext)
   if (context === undefined) {
     throw new Error('useOrganization must be used within an OrganizationProvider')
   }

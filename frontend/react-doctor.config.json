@@ -1,0 +1,10 @@
+{
+  "ignore": {
+    "rules": [
+      "deslop/unused-file",
+      "deslop/unused-export",
+      "deslop/unused-dev-dependency",
+      "deslop/unused-dependency"
+    ]
+  }
+}

@@ -67,6 +67,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="input mt-1"
                 placeholder="you@example.com"
+                aria-label="Email address"
               />
             </div>
 
@@ -84,6 +85,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="input mt-1"
                 placeholder="••••••••"
+                aria-label="Password"
               />
             </div>
           </div>
