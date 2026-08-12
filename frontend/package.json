@@ -10,7 +10,10 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "typecheck": "tsc --noEmit",
-    "doctor": "npx react-doctor@latest"
+    "doctor": "npx react-doctor@latest",
+    "check-conventions": "bun run scripts/check_conventions.ts",
+    "check-dependencies": "bun run scripts/check_dependencies.ts",
+    "gauntlet": "bun run lint && bun run typecheck && bun run check-conventions && bun run check-dependencies"
   },
   "dependencies": {
     "@tanstack/react-query": "5.51.1",
