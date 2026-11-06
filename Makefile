@@ -1,4 +1,4 @@
-.PHONY: help dev prod build down logs clean install migrate lint format test
+.PHONY: help dev prod build down logs clean install migrate lint format test migrations-check migrations-renumber
 
 help:
 	@echo "Fullstack B2B - Development Commands"
@@ -10,6 +10,8 @@ help:
 	@echo "  make down       - Stop all containers"
 	@echo "  make logs       - View container logs"
 	@echo "  make migrate    - Run database migrations"
+	@echo "  make migrations-check - Leaf, lint and no-merge checks"
+	@echo "  make migrations-renumber - Fix a migration conflict (ARGS=--apply)"
 	@echo "  make lint       - Run linting on both frontend and backend"
 	@echo "  make format     - Format code"
 	@echo "  make test       - Run all tests"
@@ -58,6 +60,14 @@ migrate:
 
 makemigrations:
 	cd backend && python manage.py makemigrations
+
+# Migrations are linearized, never merged: never `makemigrations --merge`.
+migrations-check:
+	python3 scripts/db/check_migrations.py
+
+# Dry run; `make migrations-renumber ARGS=--apply` writes the renames.
+migrations-renumber:
+	python3 scripts/db/renumber_migrations.py $(ARGS)
 
 superuser:
 	cd backend && python manage.py createsuperuser

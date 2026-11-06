@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 5
 requires-python = ">=3.12"
 
 [[package]]
@@ -162,6 +162,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/02/84/27a5fceac29bd85eb8dc8a6697e93019a8742d626180f0d67b894e20a8a1/django_ninja-1.5.3.tar.gz", hash = "sha256:974803944965ad0566071633ffd4999a956f2ad1ecbed815c0de37c1c969592b", size = 3658996, upload-time = "2026-01-10T20:02:23.821Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f4/b3/30600696c2532fcf026259f2f4980b364cb6847518bb4b3365d42a4a3afe/django_ninja-1.5.3-py3-none-any.whl", hash = "sha256:0a6ead5b4e57ec1050b584eb6f36f105f256b8f4ac70d12e774d8b6dd91e2198", size = 2365685, upload-time = "2026-01-10T20:02:21.484Z" },
+]
+
+[[package]]
+name = "django-safe-migrations"
+version = "0.7.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/cb/a1/88b7c68ab3bb338edcddc44f099bb6fd03e49b5784b3bd5f214017c6ae87/django_safe_migrations-0.7.1.tar.gz", hash = "sha256:45548dfad05fccafb4c3b36ce076598bf11eb8f6c984f406bc020651b7688995", size = 261739, upload-time = "2026-06-04T23:53:54.276Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c7/53/39ed34371895d2bb0a5787c1e4a716070f9d0b7801a45fa4e9e7fb075b2f/django_safe_migrations-0.7.1-py3-none-any.whl", hash = "sha256:9be1cc93b2cd3c50defd7b21ae6fcda259e9e35a13d81d2a75d9da9c3d8f3555", size = 110413, upload-time = "2026-06-04T23:53:53.003Z" },
 ]
 
 [[package]]
@@ -389,6 +401,11 @@ dev = [
     { name = "ruff" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "django-safe-migrations" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "django", specifier = ">=5.2" },
@@ -409,6 +426,9 @@ requires-dist = [
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.30.0" },
 ]
 provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "django-safe-migrations", specifier = "==0.7.1" }]
 
 [[package]]
 name = "mypy"
