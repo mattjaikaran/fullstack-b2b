@@ -1,0 +1,1440 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "My B2B API",
+    "version": "1.0.0",
+    "description": "A B2B multi-tenant API built with django-matt"
+  },
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "operationId": "apps_users_controllers_register",
+        "summary": "Register",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Register a new user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "apps_users_controllers_login",
+        "summary": "Login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Login and get tokens.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "apps_users_controllers_refresh",
+        "summary": "Refresh",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Refresh access token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "apps_users_controllers_me",
+        "summary": "Me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get current user profile."
+      },
+      "patch": {
+        "operationId": "apps_users_controllers_update_me",
+        "summary": "Update Me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update current user profile.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/auth/change-password": {
+      "post": {
+        "operationId": "apps_users_controllers_change_password",
+        "summary": "Change Password",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Change password.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangePasswordSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/organizations": {
+      "get": {
+        "operationId": "apps_organizations_controllers_list_organizations",
+        "summary": "List Organizations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/OrganizationWithRoleSchema"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "description": "List organizations the current user belongs to."
+      },
+      "post": {
+        "operationId": "apps_organizations_controllers_create_organization",
+        "summary": "Create Organization",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a new organization.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationCreateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/organizations/{org_id}": {
+      "get": {
+        "operationId": "apps_organizations_controllers_get_organization",
+        "summary": "Get Organization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Get organization details."
+      },
+      "patch": {
+        "operationId": "apps_organizations_controllers_update_organization",
+        "summary": "Update Organization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrganizationSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update organization (admin only).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrganizationUpdateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "delete": {
+        "operationId": "apps_organizations_controllers_delete_organization",
+        "summary": "Delete Organization",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Delete organization (owner only)."
+      }
+    },
+    "/organizations/{org_id}/teams": {
+      "get": {
+        "operationId": "apps_organizations_controllers_list_teams",
+        "summary": "List Teams",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TeamSchema"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "description": "List teams in an organization."
+      },
+      "post": {
+        "operationId": "apps_organizations_controllers_create_team",
+        "summary": "Create Team",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeamSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a new team (admin only).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamCreateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/organizations/{org_id}/teams/{team_id}": {
+      "patch": {
+        "operationId": "apps_organizations_controllers_update_team",
+        "summary": "Update Team",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "team_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Team Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TeamSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update a team (admin only).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeamUpdateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "delete": {
+        "operationId": "apps_organizations_controllers_delete_team",
+        "summary": "Delete Team",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "team_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Team Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Delete a team (admin only)."
+      }
+    },
+    "/organizations/{org_id}/members": {
+      "get": {
+        "operationId": "apps_organizations_controllers_list_members",
+        "summary": "List Members",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/MembershipSchema"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "description": "List members of an organization."
+      }
+    },
+    "/organizations/{org_id}/members/{member_id}": {
+      "patch": {
+        "operationId": "apps_organizations_controllers_update_member",
+        "summary": "Update Member",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "member_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Member Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembershipSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Update a member's role (admin only).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MembershipUpdateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "delete": {
+        "operationId": "apps_organizations_controllers_remove_member",
+        "summary": "Remove Member",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "member_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Member Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Remove a member from organization (admin only)."
+      }
+    },
+    "/organizations/{org_id}/invitations": {
+      "get": {
+        "operationId": "apps_organizations_controllers_list_invitations",
+        "summary": "List Invitations",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/InvitationSchema"
+                  },
+                  "title": "Response",
+                  "type": "array"
+                }
+              }
+            }
+          }
+        },
+        "description": "List pending invitations (admin only)."
+      },
+      "post": {
+        "operationId": "apps_organizations_controllers_create_invitation",
+        "summary": "Create Invitation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvitationSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Invite a user to organization (admin only).",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InvitationCreateSchema"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/invitations/{token}/accept": {
+      "post": {
+        "operationId": "apps_organizations_controllers_accept_invitation",
+        "summary": "Accept Invitation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "schema": {
+              "title": "Token",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MembershipSchema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Accept an invitation."
+      }
+    },
+    "/organizations/{org_id}/invitations/{invitation_id}": {
+      "delete": {
+        "operationId": "apps_organizations_controllers_cancel_invitation",
+        "summary": "Cancel Invitation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "org_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Org Id",
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "invitation_id",
+            "schema": {
+              "format": "uuid",
+              "title": "Invitation Id",
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Cancel an invitation (admin only)."
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "apps_api_health_check",
+        "summary": "Health Check",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "description": "Health check endpoint.",
+        "tags": [
+          "Health"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserSchema": {
+        "description": "User response schema.",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "integer"
+          },
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "username": {
+            "title": "Username",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "title": "Last Name",
+            "type": "string"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "bio": {
+            "default": "",
+            "title": "Bio",
+            "type": "string"
+          },
+          "is_active": {
+            "default": true,
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "date_joined": {
+            "format": "date-time",
+            "title": "Date Joined",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "username",
+          "date_joined"
+        ],
+        "title": "UserSchema",
+        "type": "object"
+      },
+      "UserCreateSchema": {
+        "description": "User registration schema.",
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "username": {
+            "maxLength": 150,
+            "minLength": 3,
+            "title": "Username",
+            "type": "string"
+          },
+          "password": {
+            "minLength": 8,
+            "title": "Password",
+            "type": "string"
+          },
+          "first_name": {
+            "default": "",
+            "title": "First Name",
+            "type": "string"
+          },
+          "last_name": {
+            "default": "",
+            "title": "Last Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "username",
+          "password"
+        ],
+        "title": "UserCreateSchema",
+        "type": "object"
+      },
+      "TokenSchema": {
+        "description": "Token response schema.",
+        "properties": {
+          "access_token": {
+            "title": "Access Token",
+            "type": "string"
+          },
+          "refresh_token": {
+            "title": "Refresh Token",
+            "type": "string"
+          },
+          "token_type": {
+            "default": "bearer",
+            "title": "Token Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_token",
+          "refresh_token"
+        ],
+        "title": "TokenSchema",
+        "type": "object"
+      },
+      "LoginSchema": {
+        "description": "Login request schema.",
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "password": {
+            "title": "Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ],
+        "title": "LoginSchema",
+        "type": "object"
+      },
+      "RefreshTokenSchema": {
+        "description": "Refresh token request schema.",
+        "properties": {
+          "refresh_token": {
+            "title": "Refresh Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "refresh_token"
+        ],
+        "title": "RefreshTokenSchema",
+        "type": "object"
+      },
+      "UserUpdateSchema": {
+        "description": "User update schema.",
+        "properties": {
+          "first_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Name"
+          },
+          "last_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Name"
+          },
+          "avatar_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatar Url"
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bio"
+          }
+        },
+        "title": "UserUpdateSchema",
+        "type": "object"
+      },
+      "ChangePasswordSchema": {
+        "description": "Change password schema.",
+        "properties": {
+          "current_password": {
+            "title": "Current Password",
+            "type": "string"
+          },
+          "new_password": {
+            "minLength": 8,
+            "title": "New Password",
+            "type": "string"
+          }
+        },
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "title": "ChangePasswordSchema",
+        "type": "object"
+      },
+      "OrganizationWithRoleSchema": {
+        "description": "Organization with user's role.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "logo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Url"
+          },
+          "plan": {
+            "title": "Plan",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "plan",
+          "role",
+          "is_active"
+        ],
+        "title": "OrganizationWithRoleSchema",
+        "type": "object"
+      },
+      "OrganizationSchema": {
+        "description": "Organization response schema.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "logo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Url"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "plan": {
+            "title": "Plan",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "plan",
+          "created_at"
+        ],
+        "title": "OrganizationSchema",
+        "type": "object"
+      },
+      "OrganizationCreateSchema": {
+        "description": "Create organization schema.",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[a-z0-9-]+$",
+            "title": "Slug",
+            "type": "string"
+          },
+          "logo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Url"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ],
+        "title": "OrganizationCreateSchema",
+        "type": "object"
+      },
+      "OrganizationUpdateSchema": {
+        "description": "Update organization schema.",
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "logo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Url"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          }
+        },
+        "title": "OrganizationUpdateSchema",
+        "type": "object"
+      },
+      "TeamSchema": {
+        "description": "Team response schema.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "organization_id": {
+            "format": "uuid",
+            "title": "Organization Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "name",
+          "slug",
+          "description",
+          "created_at"
+        ],
+        "title": "TeamSchema",
+        "type": "object"
+      },
+      "TeamCreateSchema": {
+        "description": "Create team schema.",
+        "properties": {
+          "name": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "slug": {
+            "maxLength": 255,
+            "minLength": 1,
+            "pattern": "^[a-z0-9-]+$",
+            "title": "Slug",
+            "type": "string"
+          },
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "slug"
+        ],
+        "title": "TeamCreateSchema",
+        "type": "object"
+      },
+      "TeamUpdateSchema": {
+        "description": "Update team schema.",
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "title": "TeamUpdateSchema",
+        "type": "object"
+      },
+      "MembershipSchema": {
+        "description": "Membership response schema.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "user_id": {
+            "title": "User Id",
+            "type": "integer"
+          },
+          "user_email": {
+            "title": "User Email",
+            "type": "string"
+          },
+          "organization_id": {
+            "format": "uuid",
+            "title": "Organization Id",
+            "type": "string"
+          },
+          "organization_name": {
+            "title": "Organization Name",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "user_id",
+          "user_email",
+          "organization_id",
+          "organization_name",
+          "role",
+          "is_active",
+          "created_at"
+        ],
+        "title": "MembershipSchema",
+        "type": "object"
+      },
+      "MembershipUpdateSchema": {
+        "description": "Update membership schema.",
+        "properties": {
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          }
+        },
+        "title": "MembershipUpdateSchema",
+        "type": "object"
+      },
+      "InvitationSchema": {
+        "description": "Invitation response schema.",
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "organization_id": {
+            "format": "uuid",
+            "title": "Organization Id",
+            "type": "string"
+          },
+          "organization_name": {
+            "title": "Organization Name",
+            "type": "string"
+          },
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "role": {
+            "title": "Role",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "invited_by_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invited By Email"
+          },
+          "expires_at": {
+            "format": "date-time",
+            "title": "Expires At",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "organization_id",
+          "organization_name",
+          "email",
+          "role",
+          "status",
+          "invited_by_email",
+          "expires_at",
+          "created_at"
+        ],
+        "title": "InvitationSchema",
+        "type": "object"
+      },
+      "InvitationCreateSchema": {
+        "description": "Create invitation schema.",
+        "properties": {
+          "email": {
+            "format": "email",
+            "title": "Email",
+            "type": "string"
+          },
+          "role": {
+            "default": "member",
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "InvitationCreateSchema",
+        "type": "object"
+      }
+    }
+  },
+  "servers": []
+}
