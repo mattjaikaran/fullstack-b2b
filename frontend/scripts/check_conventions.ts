@@ -33,7 +33,7 @@ const PROJECT_ROOT = new URL("..", import.meta.url).pathname;
 const SCAN_ROOTS = ["src"];
 
 const EXCLUDE_DIRS = new Set([
-  "node_modules", "dist", ".git", "coverage", ".vscode", "src/components/ui"
+  "node_modules", "dist", ".git", "coverage", ".vscode", "src/components/ui", "src/api/generated"
 ]);
 
 const API_DIRS = ["src/lib/"];

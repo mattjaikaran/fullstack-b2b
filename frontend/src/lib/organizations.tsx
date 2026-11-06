@@ -1,37 +1,20 @@
 import { createContext, use, useState, useMemo, useCallback, ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api } from './api'
+import {
+  appsOrganizationsControllersCreateInvitation,
+  appsOrganizationsControllersCreateOrganization,
+  appsOrganizationsControllersListMembers,
+  appsOrganizationsControllersListOrganizations,
+  appsOrganizationsControllersListTeams,
+  type MembershipSchema,
+  type OrganizationWithRoleSchema,
+  type TeamSchema,
+} from '@/api/generated'
 
 // Types
-export interface Organization {
-  id: string
-  name: string
-  slug: string
-  logo_url: string | null
-  plan: string
-  role: string
-  is_active: boolean
-}
-
-export interface Team {
-  id: string
-  organization_id: string
-  name: string
-  slug: string
-  description: string
-  created_at: string
-}
-
-export interface Member {
-  id: string
-  user_id: number
-  user_email: string
-  organization_id: string
-  organization_name: string
-  role: string
-  is_active: boolean
-  created_at: string
-}
+export type Organization = OrganizationWithRoleSchema
+export type Team = TeamSchema
+export type Member = MembershipSchema
 
 interface OrganizationContextType {
   organizations: Organization[]
@@ -46,7 +29,7 @@ const OrganizationContext = createContext<OrganizationContextType | undefined>(u
 const CURRENT_ORG_KEY = 'current_organization_id'
 
 const fetchOrganizations = async (): Promise<Organization[]> => {
-  const { data } = await api.get('/organizations')
+  const { data } = await appsOrganizationsControllersListOrganizations({ throwOnError: true })
   return data
 }
 
@@ -108,9 +91,12 @@ export function useOrganization() {
 export function useTeams(orgId: string | undefined) {
   return useQuery({
     queryKey: ['teams', orgId],
-    queryFn: async () => {
-      const { data } = await api.get(`/organizations/${orgId}/teams`)
-      return data as Team[]
+    queryFn: async (): Promise<Team[]> => {
+      const { data } = await appsOrganizationsControllersListTeams({
+        path: { org_id: orgId! },
+        throwOnError: true,
+      })
+      return data
     },
     enabled: !!orgId,
   })
@@ -119,9 +105,12 @@ export function useTeams(orgId: string | undefined) {
 export function useMembers(orgId: string | undefined) {
   return useQuery({
     queryKey: ['members', orgId],
-    queryFn: async () => {
-      const { data } = await api.get(`/organizations/${orgId}/members`)
-      return data as Member[]
+    queryFn: async (): Promise<Member[]> => {
+      const { data } = await appsOrganizationsControllersListMembers({
+        path: { org_id: orgId! },
+        throwOnError: true,
+      })
+      return data
     },
     enabled: !!orgId,
   })
@@ -131,8 +120,11 @@ export function useCreateOrganization() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async (data: { name: string; slug: string }) => {
-      const response = await api.post('/organizations', data)
-      return response.data
+      const { data: org } = await appsOrganizationsControllersCreateOrganization({
+        body: data,
+        throwOnError: true,
+      })
+      return org
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['organizations'] }),
   })
@@ -142,8 +134,12 @@ export function useInviteMember() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: async ({ orgId, data }: { orgId: string; data: { email: string; role: string } }) => {
-      const response = await api.post(`/organizations/${orgId}/invitations`, data)
-      return response.data
+      const { data: invitation } = await appsOrganizationsControllersCreateInvitation({
+        path: { org_id: orgId },
+        body: data,
+        throwOnError: true,
+      })
+      return invitation
     },
     onSuccess: (_, { orgId }) => queryClient.invalidateQueries({ queryKey: ['members', orgId] }),
   })
