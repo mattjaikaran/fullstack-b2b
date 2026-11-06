@@ -85,7 +85,7 @@ bun api:check     # Fail if src/api/generated is stale
 
 ## API Integration
 
-The template is configured to work with a Django API backend (like [django-api-starter](https://github.com/yourusername/django-api-starter)).
+The template is configured to work with its paired Django API backend in `backend/` (OpenAPI contract at `backend/docs/openapi/openapi.json`).
 
 ### Development Proxy
 
