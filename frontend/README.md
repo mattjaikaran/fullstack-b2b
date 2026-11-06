@@ -79,6 +79,8 @@ bun preview    # Preview production build
 bun lint       # Run ESLint
 bun format     # Format with Prettier
 bun typecheck  # Run TypeScript check
+bun api:generate  # Regenerate src/api/generated from backend/docs/openapi/openapi.json
+bun api:check     # Fail if src/api/generated is stale
 ```
 
 ## API Integration
@@ -125,27 +127,36 @@ Uses TailwindCSS with custom utility classes defined in `src/index.css`:
 1. Create a new page component in `src/pages/`
 2. Add the route in `src/App.tsx`
 
-### Adding API Endpoints
+### Using the Generated API Client
 
-Use the `api` instance from `src/lib/api.ts`:
+`src/api/generated/` is generated from the backend OpenAPI schema by `@hey-api/openapi-ts` (config: `openapi-ts.config.ts`). Do not edit it by hand.
 
 ```typescript
-import { api } from '@/lib/api'
+import { appsUsersControllersMe } from '@/api/generated'
 
-const fetchUsers = async () => {
-  const { data } = await api.get('/users')
-  return data
-}
+const { data } = await appsUsersControllersMe({ throwOnError: true })
 ```
+
+The generated client uses the shared `api` instance from `src/lib/api.ts` (via `src/lib/api-client.ts`), so auth headers and token refresh apply. TanStack Query helpers are generated in `src/api/generated/@tanstack/react-query.gen.ts`.
+
+### Regenerating After Backend API Changes
+
+```bash
+cd ../backend && .venv/bin/python manage.py export_openapi  # Writes docs/openapi/openapi.json
+cd ../frontend && bun run api:generate                       # Regenerates src/api/generated
+```
+
+Commit both the schema and the generated output. `bun run api:check` (part of `bun run gauntlet`) fails if the generated output is stale.
 
 ### TanStack Query
 
 ```typescript
 import { useQuery } from '@tanstack/react-query'
+import { appsUsersControllersMe } from '@/api/generated'
 
 const { data, isLoading, error } = useQuery({
-  queryKey: ['users'],
-  queryFn: fetchUsers,
+  queryKey: ['user'],
+  queryFn: async () => (await appsUsersControllersMe({ throwOnError: true })).data,
 })
 ```
 

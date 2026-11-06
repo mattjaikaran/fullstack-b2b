@@ -1,33 +1,20 @@
 import { createContext, use, ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { api, setTokens, clearTokens, getAccessToken } from './api'
+import {
+  appsUsersControllersLogin,
+  appsUsersControllersMe,
+  appsUsersControllersRegister,
+  type LoginSchema,
+  type UserCreateSchema,
+  type UserSchema,
+} from '@/api/generated'
+import { setTokens, clearTokens, getAccessToken } from './api'
 import { useState } from 'react'
 
 // Types
-export interface User {
-  id: number
-  email: string
-  username: string
-  first_name: string
-  last_name: string
-  avatar_url: string | null
-  bio: string
-  is_active: boolean
-  date_joined: string
-}
-
-export interface LoginCredentials {
-  email: string
-  password: string
-}
-
-export interface RegisterData {
-  email: string
-  username: string
-  password: string
-  first_name?: string
-  last_name?: string
-}
+export type User = UserSchema
+export type LoginCredentials = LoginSchema
+export type RegisterData = UserCreateSchema
 
 interface AuthContextType {
   user: User | null
@@ -42,17 +29,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 // Auth API functions
 const fetchCurrentUser = async (): Promise<User> => {
-  const { data } = await api.get('/auth/me')
+  const { data } = await appsUsersControllersMe({ throwOnError: true })
   return data
 }
 
 const loginUser = async (credentials: LoginCredentials) => {
-  const { data } = await api.post('/auth/login', credentials)
+  const { data } = await appsUsersControllersLogin({ body: credentials, throwOnError: true })
   return data
 }
 
 const registerUser = async (userData: RegisterData) => {
-  const { data } = await api.post('/auth/register', userData)
+  const { data } = await appsUsersControllersRegister({ body: userData, throwOnError: true })
   return data
 }
 
