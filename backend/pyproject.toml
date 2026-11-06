@@ -61,3 +61,8 @@ ignore_missing_imports = true
 
 [tool.django-stubs]
 django_settings_module = "config.settings"
+
+[dependency-groups]
+dev = [
+    "django-safe-migrations==0.7.1",
+]
