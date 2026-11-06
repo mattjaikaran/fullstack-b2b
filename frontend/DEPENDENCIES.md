@@ -5,6 +5,7 @@ listed here. Add a row when you add a dependency.
 
 | Package | Version |
 | --- | --- |
+| @hey-api/openapi-ts | 0.99.0 |
 | @tanstack/react-query | 5.51.1 |
 | @tanstack/react-query-devtools | 5.51.1 |
 | @types/react | 19.0.0 |
@@ -29,4 +30,4 @@ listed here. Add a row when you add a dependency.
 | tailwindcss | 3.4.4 |
 | typescript | 5.5.2 |
 | vite | 5.3.2 |
-| zod | 3.23.8 |
+| zod | 4.6.7 |

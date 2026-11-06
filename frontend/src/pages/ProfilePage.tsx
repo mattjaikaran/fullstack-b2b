@@ -1,7 +1,8 @@
 import { useReducer, FormEvent } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { appsUsersControllersUpdateMe } from '@/api/generated'
 import { useAuth } from '@/lib/auth'
-import { api, getErrorMessage } from '@/lib/api'
+import { getErrorMessage } from '@/lib/api'
 import { formatDateTime } from '@/lib/utils'
 
 interface ProfileFormState {
@@ -40,8 +41,8 @@ export default function ProfilePage() {
 
   const updateProfile = useMutation({
     mutationFn: async (data: { first_name: string; last_name: string; bio: string }) => {
-      const response = await api.patch('/auth/me', data)
-      return response.data
+      const { data: user } = await appsUsersControllersUpdateMe({ body: data, throwOnError: true })
+      return user
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] })
