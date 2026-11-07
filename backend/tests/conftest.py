@@ -28,8 +28,14 @@ def admin_user(db):
 
 
 @pytest.fixture
-def api_client():
-    """Create an API test client."""
+def api_client(transactional_db):
+    """Create an API test client.
+
+    Async requests run their ORM calls on a different connection, so data
+    created by synchronous fixtures is only visible when it is committed.
+    ``transactional_db`` gives the test a committed database instead of the
+    default wrapping transaction.
+    """
     from django.test import AsyncClient
 
     return AsyncClient()
@@ -41,5 +47,8 @@ def authenticated_client(api_client, user):
     from django_matt.auth import create_token_pair
 
     tokens = create_token_pair(user)
-    api_client.defaults["HTTP_AUTHORIZATION"] = f"Bearer {tokens['access_token']}"
+    # AsyncClient treats defaults as ASGI header names, so do not add the
+    # WSGI-style ``HTTP_`` prefix: ASGIRequest adds it again and the view would
+    # see ``HTTP_HTTP_AUTHORIZATION``.
+    api_client.defaults["AUTHORIZATION"] = f"Bearer {tokens['access_token']}"
     return api_client

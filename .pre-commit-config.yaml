@@ -1,0 +1,14 @@
+# Install: pip install pre-commit && pre-commit install
+# Run: pre-commit run --all-files
+
+repos:
+  - repo: local
+    hooks:
+      # --staged: the static no-merge check always runs; the leaf check and
+      # django-safe-migrations run only when a staged path is a migration or a model.
+      - id: check-no-merge-migrations
+        name: Migrations are linearized, never merged
+        entry: python3 scripts/db/check_migrations.py --staged
+        language: system
+        pass_filenames: false
+        always_run: true

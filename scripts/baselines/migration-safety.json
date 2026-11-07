@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "count": 1,
+  "issues": [
+    {
+      "rule_id": "SM019",
+      "app_label": "organizations",
+      "migration_name": "0001_initial",
+      "operation": "CreateModel(Membership)",
+      "operation_index": 2
+    }
+  ]
+}
