@@ -37,6 +37,8 @@ packages = ["apps", "config", "django_matt"]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+# Django writes migrations; they are not hand-maintained source.
+extend-exclude = ["apps/*/migrations"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
