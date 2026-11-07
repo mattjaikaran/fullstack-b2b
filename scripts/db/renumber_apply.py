@@ -112,6 +112,9 @@ def migrate_scratch() -> int:
             if ready.returncode == 0:
                 break
             time.sleep(1)
+        else:
+            print(f"verify: scratch Postgres {name} did not become ready in 60 s")
+            return 1
         time.sleep(2)  # the entrypoint restarts the server once after init
         port = (
             subprocess.run(
