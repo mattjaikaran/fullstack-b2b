@@ -79,7 +79,7 @@ def refresh_access_token(refresh_token: str) -> dict[str, str]:
     return create_token_pair(user)
 
 
-def get_user_from_request(request: HttpRequest) -> Any | None:
+async def get_user_from_request(request: HttpRequest) -> Any | None:
     """Extract user from request authorization header."""
     auth_header = request.headers.get("Authorization", "")
 
@@ -93,7 +93,7 @@ def get_user_from_request(request: HttpRequest) -> Any | None:
         if payload.get("type") != "access":
             return None
         user_id = payload.get("user_id")
-        return User.objects.get(id=user_id)
+        return await User.objects.aget(id=user_id)
     except (ValueError, User.DoesNotExist):
         return None
 
@@ -103,7 +103,7 @@ def jwt_required(func: Callable) -> Callable:
 
     @functools.wraps(func)
     async def wrapper(request, *args, **kwargs):
-        user = get_user_from_request(request)
+        user = await get_user_from_request(request)
         if not user:
             from django_matt.core.errors import APIError
 
@@ -119,7 +119,7 @@ def jwt_optional(func: Callable) -> Callable:
 
     @functools.wraps(func)
     async def wrapper(request, *args, **kwargs):
-        user = get_user_from_request(request)
+        user = await get_user_from_request(request)
         if user:
             request.user = user
         return await func(request, *args, **kwargs)
