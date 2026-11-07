@@ -4,8 +4,9 @@ MIGRATIONS gate and CI. Policy: migrations are linearized, never merged.
 
 Three checks, each with its own failure message:
 
-  no-merge    static, no Django. Fails on a migration file with "merge" in its
-              name, on a merge-only migration (`operations = []` and two
+  no-merge    static, no Django. Fails on a migration file whose name has a
+              `merge` token (`0002_merge_users`, not `0002_emergency_fix`),
+              on a merge-only migration (`operations = []` and two
               dependencies in one app), and on an inline
               `# safe-migrations: ignore` comment (rule exceptions live in
               config/migration_lint.py only).
@@ -46,6 +47,9 @@ SETTINGS = "config.migration_lint"
 FROZEN = ["--frozen"] if (BACKEND / "uv.lock").is_file() else []
 RENUMBER = "python3 scripts/db/renumber_migrations.py"
 INLINE_IGNORE_RE = re.compile(r"#\s*safe-migrations\s*:\s*ignore", re.IGNORECASE)
+# A merge migration is `0002_merge` or `0002_merge_users`; `0002_emergency_fix`
+# and `0002_submerge_x` are ordinary names that merely contain "merge".
+MERGE_NAME_RE = re.compile(r"(^|_)merge(_|$)")
 CONFLICT_HELP = (
     "A migration conflict is fixed by renumbering, never by a merge migration.\n"
     "  NEVER run `makemigrations --merge`.\n"
@@ -71,7 +75,7 @@ def check_no_merge(files: list[Path] | None = None) -> list[str]:
     for path in files if files is not None else migration_files():
         rel = path.relative_to(ROOT)
         text = path.read_text(encoding="utf-8")
-        if "merge" in path.name.lower():
+        if MERGE_NAME_RE.search(path.stem.lower()):
             problems.append(f"{rel}: a migration file with 'merge' in its name is banned")
         if INLINE_IGNORE_RE.search(text):
             problems.append(
