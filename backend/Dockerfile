@@ -12,8 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-# Copy dependency files
-COPY pyproject.toml ./
+# Copy application code (the editable install reads pyproject.toml, README.md
+# and the package sources)
+COPY . .
 
 # Install dependencies
 RUN uv pip install --system --no-cache -e .
