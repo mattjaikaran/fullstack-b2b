@@ -14,7 +14,7 @@ A complete B2B SaaS monorepo with Django API backend and React frontend.
 
 ```bash
 # Clone
-git clone https://github.com/yourusername/fullstack-b2b.git myproject
+git clone https://github.com/mattjaikaran/fullstack-b2b.git myproject
 cd myproject
 
 # Copy env file
