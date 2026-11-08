@@ -13,6 +13,9 @@ __pycache__/
 node_modules/
 dist/
 
+# Generated API client (bun run api:generate)
+frontend/src/api/generated/
+
 # IDE
 .idea/
 .vscode/
