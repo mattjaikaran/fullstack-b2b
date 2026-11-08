@@ -1,6 +1,6 @@
 # Fullstack B2B
 
-[![CI](https://github.com/yourusername/fullstack-b2b/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/fullstack-b2b/actions/workflows/ci.yml)
+[![CI](https://github.com/mattjaikaran/fullstack-b2b/actions/workflows/ci.yml/badge.svg)](https://github.com/mattjaikaran/fullstack-b2b/actions/workflows/ci.yml)
 
 A complete B2B SaaS monorepo with Django API backend and React frontend.
 

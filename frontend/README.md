@@ -23,10 +23,10 @@ A modern React starter template with Vite, TailwindCSS, TanStack Query, and Type
 
 ### Setup
 
-1. Clone the repository:
+1. Clone the monorepo and go to the frontend:
 ```bash
-git clone https://github.com/yourusername/react-vite-starter.git myapp
-cd myapp
+git clone https://github.com/mattjaikaran/fullstack-b2b.git myproject
+cd myproject/frontend
 ```
 
 2. Install dependencies:

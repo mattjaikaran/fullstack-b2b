@@ -23,10 +23,10 @@ A minimal Django API template built with [django-matt](https://github.com/mattja
 
 ### Setup
 
-1. Clone the repository:
+1. Clone the monorepo and go to the backend:
 ```bash
-git clone https://github.com/yourusername/django-api-starter.git myproject
-cd myproject
+git clone https://github.com/mattjaikaran/fullstack-b2b.git myproject
+cd myproject/backend
 ```
 
 2. Create and activate virtual environment:
