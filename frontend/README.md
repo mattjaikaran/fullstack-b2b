@@ -80,8 +80,9 @@ bun lint       # Run ESLint
 bun format     # Format with Prettier
 bun typecheck  # Run TypeScript check
 bun api:generate  # Regenerate src/api/generated from backend/docs/openapi/openapi.json
-bun api:check     # Fail if src/api/generated is stale
 ```
+
+`dev`, `build`, `lint` and `typecheck` regenerate `src/api/generated` first; it is not committed.
 
 ## API Integration
 
@@ -129,7 +130,7 @@ Uses TailwindCSS with custom utility classes defined in `src/index.css`:
 
 ### Using the Generated API Client
 
-`src/api/generated/` is generated from the backend OpenAPI schema by `@hey-api/openapi-ts` (config: `openapi-ts.config.ts`). Do not edit it by hand.
+`src/api/generated/` is generated from the backend OpenAPI schema by `@hey-api/openapi-ts` (config: `openapi-ts.config.ts`). It is gitignored: do not edit it by hand and do not commit it.
 
 ```typescript
 import { appsUsersControllersMe } from '@/api/generated'
@@ -143,10 +144,9 @@ The generated client uses the shared `api` instance from `src/lib/api.ts` (via `
 
 ```bash
 cd ../backend && .venv/bin/python manage.py export_openapi  # Writes docs/openapi/openapi.json
-cd ../frontend && bun run api:generate                       # Regenerates src/api/generated
 ```
 
-Commit both the schema and the generated output. `bun run api:check` (part of `bun run gauntlet`) fails if the generated output is stale.
+Commit the schema. The client regenerates from it on `bun run dev`, `build`, `lint` and `typecheck`, or on demand with `bun run api:generate`.
 
 ### TanStack Query
 

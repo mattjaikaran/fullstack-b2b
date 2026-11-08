@@ -1,0 +1,9 @@
+# The frontend Dockerfile builds from the repo root so it can read
+# backend/docs/openapi/openapi.json.
+.git
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.venv
+frontend/dist
+frontend/src/api/generated

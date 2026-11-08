@@ -46,7 +46,11 @@ services:
         condition: service_healthy
 
   frontend:
-    build: ./frontend
+    # The image generates the API client from the committed OpenAPI schema,
+    # so the build context is the repo root.
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
     ports:
       - "3000:80"
     depends_on:
@@ -86,9 +90,13 @@ services:
       - "5173:5173"
     environment:
       - VITE_API_URL=http://localhost:8000/api
+      # predev regenerates the client; the spec is mounted below because the
+      # build context is ./frontend, so ../backend does not exist in the image.
+      - OPENAPI_INPUT=/backend/docs/openapi/openapi.json
     volumes:
       - ./frontend:/app
       - /app/node_modules
+      - ./backend/docs/openapi:/backend/docs/openapi:ro
     profiles:
       - dev
 
