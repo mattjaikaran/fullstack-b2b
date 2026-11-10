@@ -21,6 +21,10 @@ frontend/src/api/generated/
 .vscode/
 *.swp
 
+# Local agent overrides (personal, never committed)
+*.local.*
+.claude/settings.local.json
+
 # OS
 .DS_Store
 

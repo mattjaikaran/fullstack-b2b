@@ -1,4 +1,4 @@
-.PHONY: help dev prod build down logs clean install migrate lint format test migrations-check migrations-renumber
+.PHONY: help dev prod build down logs clean install migrate lint format test migrations-check migrations-renumber agents-check
 
 help:
 	@echo "Fullstack B2B - Development Commands"
@@ -12,6 +12,7 @@ help:
 	@echo "  make migrate    - Run database migrations"
 	@echo "  make migrations-check - Leaf, lint and no-merge checks"
 	@echo "  make migrations-renumber - Fix a migration conflict (ARGS=--apply)"
+	@echo "  make agents-check - Check AGENTS.md, CLAUDE.md and skills"
 	@echo "  make lint       - Run linting on both frontend and backend"
 	@echo "  make format     - Format code"
 	@echo "  make test       - Run all tests"
@@ -68,6 +69,10 @@ migrations-check:
 # Dry run; `make migrations-renumber ARGS=--apply` writes the renames.
 migrations-renumber:
 	python3 scripts/db/renumber_migrations.py $(ARGS)
+
+# AGENTS.md is the single source of agent instructions; links must resolve.
+agents-check:
+	python3 scripts/check_agents_md.py
 
 superuser:
 	cd backend && python manage.py createsuperuser
