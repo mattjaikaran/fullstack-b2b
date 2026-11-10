@@ -194,3 +194,12 @@ jobs:
       - name: Check migrations
         if: steps.changes.outputs.django == 'true'
         run: python3 scripts/db/check_migrations.py --base "origin/${{ github.base_ref }}"
+
+  agents:
+    name: Agent Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check AGENTS.md and skills
+        run: python3 scripts/check_agents_md.py

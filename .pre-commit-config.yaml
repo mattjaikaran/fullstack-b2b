@@ -12,3 +12,12 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+
+      # AGENTS.md must exist, its relative links must resolve, CLAUDE.md must
+      # only import it, and skills need name/description frontmatter.
+      - id: check-agents-md
+        name: Agent docs are valid
+        entry: python3 scripts/check_agents_md.py
+        language: system
+        pass_filenames: false
+        always_run: true
