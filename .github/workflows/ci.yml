@@ -5,7 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [opened, synchronize, reopened]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -50,7 +50,7 @@ jobs:
   backend:
     name: Backend Tests
     needs: changes
-    if: needs.changes.outputs.backend == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: needs.changes.outputs.backend == 'true'
     runs-on: ubuntu-latest
     continue-on-error: true  # Allow backend to fail while project is being set up
 
@@ -138,7 +138,7 @@ jobs:
   frontend:
     name: Frontend Tests
     needs: changes
-    if: needs.changes.outputs.frontend == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
 
     steps:
@@ -175,7 +175,7 @@ jobs:
     continue-on-error: true  # Allow docker build to fail while project is being set up
     needs: [changes, backend, frontend]
     # Run even if backend fails, but only when relevant paths changed
-    if: always() && needs.changes.result == 'success' && needs.changes.outputs.docker == 'true' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    if: always() && needs.changes.result == 'success' && needs.changes.outputs.docker == 'true'
 
     steps:
       - name: Checkout code
