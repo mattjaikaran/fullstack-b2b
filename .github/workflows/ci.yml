@@ -34,16 +34,17 @@ jobs:
         with:
           filters: |
             backend:
-              - backend/**
-              - .github/workflows/**
+              - 'backend/**'
+              - '.github/workflows/**'
             frontend:
-              - frontend/**
-              - .github/workflows/**
+              - 'frontend/**'
+              - 'backend/docs/openapi/openapi.json'
+              - '.github/workflows/**'
             docker:
-              - backend/**
-              - frontend/**
-              - docker-compose.yml
-              - .github/workflows/**
+              - 'backend/**'
+              - 'frontend/**'
+              - 'docker-compose.yml'
+              - '.github/workflows/**'
 
   # Backend tests with Django + PostgreSQL
   backend:
