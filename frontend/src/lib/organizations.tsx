@@ -34,8 +34,8 @@ const fetchOrganizations = async (): Promise<Organization[]> => {
 }
 
 export function OrganizationProvider({ children }: { children: ReactNode }) {
-  const [currentOrgId, setCurrentOrgId] = useState<string | null>(
-    () => localStorage.getItem(CURRENT_ORG_KEY)
+  const [currentOrgId, setCurrentOrgId] = useState<string | null>(() =>
+    localStorage.getItem(CURRENT_ORG_KEY),
   )
   const queryClient = useQueryClient()
 
@@ -70,14 +70,10 @@ export function OrganizationProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({ organizations, currentOrg, isLoading, setCurrentOrg, refreshOrganizations }),
-    [organizations, currentOrg, isLoading, refreshOrganizations]
+    [organizations, currentOrg, isLoading, refreshOrganizations],
   )
 
-  return (
-    <OrganizationContext.Provider value={value}>
-      {children}
-    </OrganizationContext.Provider>
-  )
+  return <OrganizationContext.Provider value={value}>{children}</OrganizationContext.Provider>
 }
 
 export function useOrganization() {
@@ -133,7 +129,13 @@ export function useCreateOrganization() {
 export function useInviteMember() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: async ({ orgId, data }: { orgId: string; data: { email: string; role: string } }) => {
+    mutationFn: async ({
+      orgId,
+      data,
+    }: {
+      orgId: string
+      data: { email: string; role: string }
+    }) => {
       const { data: invitation } = await appsOrganizationsControllersCreateInvitation({
         path: { org_id: orgId },
         body: data,

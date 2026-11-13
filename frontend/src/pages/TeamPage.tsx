@@ -16,7 +16,10 @@ export default function TeamPage() {
     e.preventDefault()
     if (!currentOrg) return
     try {
-      await inviteMember.mutateAsync({ orgId: currentOrg.id, data: { email: inviteEmail, role: inviteRole } })
+      await inviteMember.mutateAsync({
+        orgId: currentOrg.id,
+        data: { email: inviteEmail, role: inviteRole },
+      })
       setInviteEmail('')
       setError('')
     } catch (err) {
@@ -77,7 +80,9 @@ export default function TeamPage() {
                   <p className="font-medium">{member.user_email}</p>
                   <p className="text-sm text-gray-500 capitalize">{member.role}</p>
                 </div>
-                <span className={`rounded-full px-2 py-1 text-xs ${member.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
+                <span
+                  className={`rounded-full px-2 py-1 text-xs ${member.is_active ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}
+                >
                   {member.is_active ? 'Active' : 'Inactive'}
                 </span>
               </div>

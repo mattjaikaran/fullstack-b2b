@@ -86,7 +86,7 @@ make clean         # Remove containers and volumes
 This project includes a GitHub Actions CI workflow that:
 
 - **Backend**: Runs linting (ruff), type checking (mypy), and tests (pytest) with PostgreSQL
-- **Frontend**: Runs linting (eslint), type checking (tsc), and builds
+- **Frontend**: Runs linting (oxlint), formatting (oxfmt), type checking (tsc), and builds
 - **Docker**: Builds both backend and frontend images
 
 The workflow runs on every push and pull request to the `main` branch.

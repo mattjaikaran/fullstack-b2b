@@ -156,7 +156,11 @@ jobs:
 
       - name: Run linting
         working-directory: frontend
-        run: bun run lint || echo "No lint script configured"
+        run: bun run lint:strict
+
+      - name: Check formatting
+        working-directory: frontend
+        run: bun run format:check
 
       - name: Run type checking
         working-directory: frontend

@@ -39,22 +39,23 @@ from `PATH`, so activate the venv first:
 | `make makemigrations` | Generate migrations after a model change | backend venv |
 | `make migrations-check` | Migration leaf, lint and no-merge checks | backend venv |
 | `make migrations-renumber` | Dry-run a conflict fix; `ARGS=--apply` writes | backend venv |
-| `make lint` | `ruff check`, `ruff format --check`, then eslint | backend venv + `bun install` |
-| `make format` | `ruff format`, then prettier | backend venv + `bun install` |
+| `make lint` | `ruff check`, `ruff format --check`, then oxlint | backend venv + `bun install` |
+| `make format` | `ruff format`, then oxfmt | backend venv + `bun install` |
 | `make test` | Backend pytest, then frontend typecheck | backend venv + Postgres |
 | `make agents-check` | AGENTS.md links, CLAUDE.md and skill frontmatter | python3 |
 
-Frontend scripts (`cd frontend`): `bun run dev`, `build`, `lint`, `typecheck`,
-`format`, `doctor`, `check-conventions`, `check-dependencies`, `api:generate`,
-`api:check` and `gauntlet`. `gauntlet` is the full static gate. `dev`, `build`,
-`lint` and `typecheck` regenerate `src/api/generated` first.
+Frontend scripts (`cd frontend`): `bun run dev`, `build`, `lint`, `lint:strict`,
+`lint:fix`, `typecheck`, `format`, `format:check`, `doctor`, `check-conventions`,
+`check-dependencies`, `api:generate`, `api:check` and `gauntlet`. `gauntlet` is
+the full static gate. `dev`, `build` and `typecheck` regenerate
+`src/api/generated` first.
 
 ## Code standards
 
 - Backend: ruff (line length 100) and mypy. Pydantic schemas go in
   `schemas.py`, handlers in `controllers.py`, routers are mounted from
   `backend/apps/api.py`.
-- Frontend: TypeScript strict, ESLint + Prettier. `bun run check-conventions`
+- Frontend: TypeScript strict, oxlint + oxfmt. `bun run check-conventions`
   bans `as any`, `@ts-ignore`, `console.log`, default-exported components and
   raw axios/fetch outside `src/lib/api.ts`.
 - Dependencies: the inventory and its rules live in

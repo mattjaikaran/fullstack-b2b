@@ -12,7 +12,7 @@ A modern React starter template with Vite, TailwindCSS, TanStack Query, and Type
 - **React Router v6** - Client-side routing
 - **Axios** - HTTP client with interceptors
 - **Zod** - Schema validation
-- **ESLint + Prettier** - Code linting and formatting
+- **Oxlint + Oxfmt** - Code linting and formatting
 - **Bun** - Fast JavaScript runtime and package manager
 
 ## Quick Start
@@ -24,22 +24,26 @@ A modern React starter template with Vite, TailwindCSS, TanStack Query, and Type
 ### Setup
 
 1. Clone the monorepo and go to the frontend:
+
 ```bash
 git clone https://github.com/mattjaikaran/fullstack-b2b.git myproject
 cd myproject/frontend
 ```
 
 2. Install dependencies:
+
 ```bash
 bun install
 ```
 
 3. Copy environment file:
+
 ```bash
 cp .env.example .env
 ```
 
 4. Start development server:
+
 ```bash
 bun dev
 ```
@@ -76,13 +80,16 @@ src/
 bun dev        # Start development server
 bun build      # Build for production
 bun preview    # Preview production build
-bun lint       # Run ESLint
-bun format     # Format with Prettier
-bun typecheck  # Run TypeScript check
+bun lint          # Run Oxlint
+bun lint:strict   # Run Oxlint with warnings denied
+bun lint:fix      # Run Oxlint with auto-fix
+bun format        # Format with Oxfmt
+bun format:check  # Check formatting with Oxfmt
+bun typecheck     # Run TypeScript check
 bun api:generate  # Regenerate src/api/generated from backend/docs/openapi/openapi.json
 ```
 
-`dev`, `build`, `lint` and `typecheck` regenerate `src/api/generated` first; it is not committed.
+`dev`, `build` and `typecheck` regenerate `src/api/generated` first; it is not committed.
 
 ## API Integration
 
@@ -146,7 +153,7 @@ The generated client uses the shared `api` instance from `src/lib/api.ts` (via `
 cd ../backend && .venv/bin/python manage.py export_openapi  # Writes docs/openapi/openapi.json
 ```
 
-Commit the schema. The client regenerates from it on `bun run dev`, `build`, `lint` and `typecheck`, or on demand with `bun run api:generate`.
+Commit the schema. The client regenerates from it on `bun run dev`, `build` and `typecheck`, or on demand with `bun run api:generate`.
 
 ### TanStack Query
 

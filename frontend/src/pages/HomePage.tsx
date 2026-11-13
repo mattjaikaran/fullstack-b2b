@@ -72,9 +72,7 @@ export default function HomePage() {
           </div>
           <div className="rounded-lg bg-white p-6 shadow">
             <h3 className="text-lg font-medium text-gray-900">React Router</h3>
-            <p className="mt-2 text-gray-500">
-              Client-side routing with React Router v6.
-            </p>
+            <p className="mt-2 text-gray-500">Client-side routing with React Router v6.</p>
           </div>
         </div>
       </div>

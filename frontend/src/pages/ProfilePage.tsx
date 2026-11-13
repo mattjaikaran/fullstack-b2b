@@ -14,7 +14,11 @@ interface ProfileFormState {
 }
 
 type ProfileFormAction =
-  | { type: 'SET_FIELD'; field: keyof Pick<ProfileFormState, 'firstName' | 'lastName' | 'bio'>; value: string }
+  | {
+      type: 'SET_FIELD'
+      field: keyof Pick<ProfileFormState, 'firstName' | 'lastName' | 'bio'>
+      value: string
+    }
   | { type: 'SET_STATUS'; error: string; success: string }
 
 function reducer(state: ProfileFormState, action: ProfileFormAction): ProfileFormState {
@@ -131,7 +135,9 @@ export default function ProfilePage() {
                     id="firstName"
                     type="text"
                     value={firstName}
-                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'firstName', value: e.target.value })}
+                    onChange={(e) =>
+                      dispatch({ type: 'SET_FIELD', field: 'firstName', value: e.target.value })
+                    }
                     className="input mt-1"
                     aria-label="First name"
                   />
@@ -145,7 +151,9 @@ export default function ProfilePage() {
                     id="lastName"
                     type="text"
                     value={lastName}
-                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'lastName', value: e.target.value })}
+                    onChange={(e) =>
+                      dispatch({ type: 'SET_FIELD', field: 'lastName', value: e.target.value })
+                    }
                     className="input mt-1"
                     aria-label="Last name"
                   />
@@ -159,7 +167,9 @@ export default function ProfilePage() {
                     id="bio"
                     rows={3}
                     value={bio}
-                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'bio', value: e.target.value })}
+                    onChange={(e) =>
+                      dispatch({ type: 'SET_FIELD', field: 'bio', value: e.target.value })
+                    }
                     className="input mt-1"
                     placeholder="Tell us about yourself…"
                     aria-label="Bio"

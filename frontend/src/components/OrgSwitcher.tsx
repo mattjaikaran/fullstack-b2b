@@ -33,7 +33,12 @@ export default function OrgSwitcher() {
           {currentOrg?.name?.charAt(0).toUpperCase()}
         </div>
         <span className="max-w-[100px] truncate">{currentOrg?.name}</span>
-        <svg className={cn('h-4 w-4', isOpen && 'rotate-180')} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className={cn('h-4 w-4', isOpen && 'rotate-180')}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
@@ -54,10 +59,13 @@ export default function OrgSwitcher() {
               <button
                 key={org.id}
                 type="button"
-                onClick={() => { setCurrentOrg(org); setIsOpen(false) }}
+                onClick={() => {
+                  setCurrentOrg(org)
+                  setIsOpen(false)
+                }}
                 className={cn(
                   'flex w-full items-center gap-3 px-3 py-2 text-left hover:bg-gray-50',
-                  currentOrg?.id === org.id && 'bg-primary-50'
+                  currentOrg?.id === org.id && 'bg-primary-50',
                 )}
               >
                 <div className="flex size-8 items-center justify-center rounded bg-primary-100 text-sm font-bold text-primary-700">
@@ -70,7 +78,11 @@ export default function OrgSwitcher() {
               </button>
             ))}
             <div className="border-t">
-              <Link to="/organizations/new" onClick={() => setIsOpen(false)} className="flex items-center px-3 py-2 text-sm hover:bg-gray-50">
+              <Link
+                to="/organizations/new"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center px-3 py-2 text-sm hover:bg-gray-50"
+              >
                 + Create Organization
               </Link>
             </div>
