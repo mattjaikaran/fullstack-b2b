@@ -146,9 +146,7 @@ const Image = ({
       style={wrapperStyle}
     >
       {showSkeleton && (
-        <span
-          className={cn('absolute inset-0 animate-pulse bg-gray-200', roundedClass)}
-        />
+        <span className={cn('absolute inset-0 animate-pulse bg-gray-200', roundedClass)} />
       )}
       {showBlur && (
         <img
@@ -195,26 +193,10 @@ const AvatarImage = ({ size = 40, width, height, ...props }: AvatarImageProps) =
 
 const HeroImage = (
   props: Omit<ImageProps, 'layout' | 'aspectRatio' | 'priority' | 'objectFit'>,
-) => (
-  <Image
-    layout="responsive"
-    aspectRatio="16/9"
-    priority
-    objectFit="cover"
-    {...props}
-  />
-)
+) => <Image layout="responsive" aspectRatio="16/9" priority objectFit="cover" {...props} />
 
 const ThumbnailImage = (
   props: Omit<ImageProps, 'layout' | 'aspectRatio' | 'rounded' | 'objectFit'>,
-) => (
-  <Image
-    layout="responsive"
-    aspectRatio="16/9"
-    rounded="md"
-    objectFit="cover"
-    {...props}
-  />
-)
+) => <Image layout="responsive" aspectRatio="16/9" rounded="md" objectFit="cover" {...props} />
 
 export { Image, AvatarImage, HeroImage, ThumbnailImage }

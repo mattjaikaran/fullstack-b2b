@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from './api'
 
 /**
  * Runtime config for the generated hey-api client.
@@ -8,5 +8,5 @@ import { api } from './api';
  * every request URL itself and passes `baseURL: ''` to axios.
  */
 export function createClientConfig<T extends object>(config: T) {
-  return { ...config, axios: api, baseURL: api.defaults.baseURL };
+  return { ...config, axios: api, baseURL: api.defaults.baseURL }
 }

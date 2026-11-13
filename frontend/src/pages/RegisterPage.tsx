@@ -13,7 +13,11 @@ interface RegisterFormState {
 }
 
 type RegisterFormAction =
-  | { type: 'SET_FIELD'; field: keyof Pick<RegisterFormState, 'email' | 'username' | 'password' | 'confirmPassword'>; value: string }
+  | {
+      type: 'SET_FIELD'
+      field: keyof Pick<RegisterFormState, 'email' | 'username' | 'password' | 'confirmPassword'>
+      value: string
+    }
   | { type: 'SET_ERROR'; error: string }
   | { type: 'SET_LOADING'; isLoading: boolean }
 
@@ -106,7 +110,9 @@ export default function RegisterPage() {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'email', value: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_FIELD', field: 'email', value: e.target.value })
+                }
                 className="input mt-1"
                 placeholder="you@example.com"
                 aria-label="Email address"
@@ -124,7 +130,9 @@ export default function RegisterPage() {
                 autoComplete="username"
                 required
                 value={username}
-                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'username', value: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_FIELD', field: 'username', value: e.target.value })
+                }
                 className="input mt-1"
                 placeholder="johndoe"
                 aria-label="Username"
@@ -142,7 +150,9 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 value={password}
-                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'password', value: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_FIELD', field: 'password', value: e.target.value })
+                }
                 className="input mt-1"
                 placeholder="••••••••"
                 aria-label="Password"
@@ -160,7 +170,9 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 value={confirmPassword}
-                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'confirmPassword', value: e.target.value })}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_FIELD', field: 'confirmPassword', value: e.target.value })
+                }
                 className="input mt-1"
                 placeholder="••••••••"
                 aria-label="Confirm password"

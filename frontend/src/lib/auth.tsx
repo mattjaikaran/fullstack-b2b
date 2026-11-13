@@ -1,4 +1,4 @@
-import { createContext, use, ReactNode } from 'react'
+import { createContext, use, useState, ReactNode } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   appsUsersControllersLogin,
@@ -9,7 +9,6 @@ import {
   type UserSchema,
 } from '@/api/generated'
 import { setTokens, clearTokens, getAccessToken } from './api'
-import { useState } from 'react'
 
 // Types
 export type User = UserSchema

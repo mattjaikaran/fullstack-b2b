@@ -1,4 +1,4 @@
-import { defineConfig } from '@hey-api/openapi-ts';
+import { defineConfig } from '@hey-api/openapi-ts'
 
 // Input defaults to the backend export committed in this monorepo.
 // Override with OPENAPI_INPUT (path or URL) to generate from another spec.
@@ -21,4 +21,4 @@ export default defineConfig({
     },
     '@tanstack/react-query',
   ],
-});
+})
